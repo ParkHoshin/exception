@@ -1,0 +1,36 @@
+checked exception
+-반드시 예외 처리를 해야한다.(try~cathc를 통해)
+-컴파일 단계에서 확인 가능하다.
+-예외 발생시 트랜잭션 롤백 하지 않는다.
+-런타임 exception을 제외한 exception의 하위 클래스
+
+unchecked exception
+-명시적 예외 처리를 강제하지 않는다.
+-실행 단계에서 확인 가능하다.
+-예외 발생 시 롤백한다.
+-runtimeException의 하위 클래스
+
+예시)
+SQL 문법이 틀린 경우
+제약조건을 위반한 경우
+DB 서버가 다운된 경우
+네트워크 불안정
+DB커넥션 풀
+
+<!-- Exception 설정 start -->
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerExceptionResolver"> ---------------------->@ExceptionHandler가 적용된 메소드를 이용해서 예외처리한다.
+		<property name="order" value="1"/> --------------------> order 프로퍼티 값으로 순서를 적용.
+	</bean>
+
+	<bean id="simpleResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"> ------------------>예외 타입별로 view 이름을 다르게 지정할 때 사용
+		<property name="order" value="2"/>
+		<property name="defaultErrorView" value="common/error"/> --------------->default에러가 나면 기본으로 보여줄 view 화면
+		<property name="exceptionMappings"> ----------------------->에러 상황 마다 그에 맞는 view를 설정해준다.
+			<props>
+				<prop key="org.springframework.dao.DataAccessException">common/error</prop> --------------------->runtimeException(unchecked)
+				<prop key="org.springframework.transaction.TransactionException">common/error</prop> -------------->트랜잭션에 관련된 exception.
+				<prop key="org.springframework.security.access.AccessDeniedException">common/error</prop> -------------> 권한 없는 사용자 접근시
+			</props>
+		</property>
+	</bean>
+	<!-- Exception 설정 end -->
