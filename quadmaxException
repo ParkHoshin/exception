@@ -1,0 +1,38 @@
+로직을 수행중에 에러!
+-controller 소스 내용
+  if (file == null || !file.exists()) {
+        throw new QuadMaxException(quadMaxMessageSource, "FF0004");	---------------------->QuadMaxException을 호출!
+      }
+      
+-호출한 QuadMaxException 내용 
+  
+  1)public QuadMaxException(MessageSource messageSource, String messageKey) {     ----------------->해당메서드에 (quadMaxMessageSource, "FF0004") 대입.
+      this(messageSource, messageKey, null, null, LocaleContextHolder.getLocale(), null);
+    }
+    
+  2)public QuadMaxException(MessageSource messageSource, String messageKey, Object[] messageParameters) {  
+                                                                          var msg = common.lang("FW0004", row, fieldName); 
+                                                                          FW0004 = {0} \uD589\uC758 \uD544\uB4DC [{1}]
+                                                                                   row                           fieldName
+		this(messageSource, messageKey, messageParameters, null, LocaleContextHolder.getLocale(), null);
+	}  
+    
+ 
+ - BaseException 으로 넘겨준다.
+      this.messageKey = messageKey; ------------->FF0004
+      this.messageParameters = messageParameters;-------------->null
+      this.message = messageSource.getMessage(messageKey, messageParameters, tempDefaultMessage, locale); 
+                     (quadMaxMessageSource).getMessage(FF0004,null,null,locale)
+      this.wrappedException = wrappedException;	
+    
+   *BaseException을 부모로 바라본다.
+  -BaseException은 QuadMaxException 값을 받아온다.
+    protected String message;
+    protected String messageKey;
+    protected Object[] messageParameters;
+    protected Exception wrappedException;     
+    ```
+
+  
+	
+
