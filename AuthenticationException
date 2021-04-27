@@ -1,0 +1,20 @@
+CONTEXT-SECURITY 파일.
+  <beans:bean id="loginAuthenticationProvider"
+  class="com.ecs.quadmax.login.LoginAuthenticationProvider" /> -------------------------->  스프링-시큐리티에서 사용할 인터페이스를 설정.
+
+LoginAuthenticationProvider.java 파일. -------------------------->  화면에서 입력한 로그인 정보와 DB에서 가져온 사용자의 정보를 비교해주는 인터페이스.
+  
+ -UsernameNotFoundException 은 ID가 없거나 권한이 없을때 보여주는 익셉션이다.
+  if (user == null) {
+					throw new UsernameNotFoundException(quadMaxMessageSource.getMessage("MF0079"));
+		}
+
+-PasswordErrorCountExceededException 은 비밀번호 5회 오류시 보여주는 익셉션이다.
+  if (isDirectLogin) {
+            if (user.getPwErrCnt() >= 5) {
+              throw new PasswordErrorCountExceededException(quadMaxMessageSource.getMessage("MF0101"));
+            }
+-BadCredentialsException은 비밀번호가 틀리거나 암화화가 되어있지 않을시에 보여주는 익셉션이다.             
+ if (!SecureUtil.isCheckPassword(password, user.getEmpPw())) {
+							throw new BadCredentialsException(quadMaxMessageSource.getMessage("MW0101"));	// 접속자 정보를 다시 확인해 주십시오.(id, password)
+						}
