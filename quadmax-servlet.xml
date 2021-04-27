@@ -10,6 +10,16 @@ unchecked exception
 -예외 발생 시 롤백한다.
 -runtimeException의 하위 클래스
 
+-스프링시큐리티 종류
+AuthenticationException
+UsernameNotFoundException : 계정 없음
+BadCredentialsException : 비밀번호= 불일치
+AccountStatusException
+AccountExpiredException : 계정만료
+CredentialsExpiredException : 비밀번호 만료
+DisabledException : 계정 비활성화
+LockedException : 계정잠기
+
 예시)
 SQL 문법이 틀린 경우
 제약조건을 위반한 경우
